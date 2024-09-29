@@ -47,7 +47,7 @@ runs:
       shell: bash
     - if: inputs.task-path != ''
       name: Run ecs-task-def container diff
-      run: cmd ecs-task-def --container-name ${{ inputs.container-name }} --github-email ${{ inputs.github-email }} --github-owner ${{ inputs.github-owner }} --github-repository ${{ inputs.github-repository }} --github-token ${{ inputs.github-token }} --github-url ${{ inputs.github-url }} --github-username ${{ inputs.github-username }} --task-path ${{ inputs.task-path }}
+      run: cmd ecs-task-def --container-name ${{ inputs.container-name }} --github-email ${{ inputs.github-email }} --github-owner ${{ inputs.github-owner }} --github-repository ${{ inputs.github-repository }} --github-token ${{ inputs.github-token }} --github-url ${{ inputs.github-url }} --github-username ${{ inputs.github-username }} --task-path ${{ inputs.task-path }} --target-tag ${{ inputs.target-tag }}
       shell: bash
     - if: inputs.task-path == ''
       name: Run ecs-task-def container diff
