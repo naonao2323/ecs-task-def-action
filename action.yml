@@ -29,20 +29,21 @@ inputs:
   go-version-input:
     description: 'Version of Go to use for govulncheck'
     required: false
+  repo-checkout:
+    required: false
+    default: false
 
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4.1.1
+    - if: inputs.repo-checkout != false
+      uses: actions/checkout@v4.1.1
     - uses: actions/setup-go@v5.0.0
       with:
         go-version: ${{ inputs.go-version-input }}
         go-version-file: ${{ inputs.go-version-file }}
     - name: Install ecs-task-def
       run: go install github.com/naonao2323/ecs-task-def/cmd@v1.0.7
-      shell: bash
-    - name: Debug task-path
-      run: echo ${{ inputs.task-path }}
       shell: bash
     - if: inputs.task-path != ''
       name: Run ecs-task-def container diff
