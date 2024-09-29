@@ -1,0 +1,54 @@
+name: ecs-task-def
+
+inputs:
+  container-name:
+    required: true
+  container-path:
+    required: false
+    default: ''
+  target-tag:
+    required: true
+  task-path:
+    required: false
+    default: ''
+  github-email:
+    required: true
+  github-owner:
+    required: true
+  github-repository:
+    required: true
+  github-token:
+    required: true
+  github-url:
+    required: true
+  github-username:
+    required: true
+  go-version-file:
+    description: 'Path to the go.mod or go.work file.'
+    required: false
+  go-version-input:
+    description: 'Version of Go to use for govulncheck'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4.1.1
+    - uses: actions/setup-go@v5.0.0
+      with:
+        go-version: ${{ inputs.go-version-input }}
+        go-version-file: ${{ inputs.go-version-file }}
+    - name: Install ecs-task-def
+      run: go install github.com/naonao2323/ecs-task-def/cmd@v1.0.7
+      shell: bash
+    - name: Debug task-path
+      run: echo ${{ inputs.task-path }}
+      shell: bash
+    - if: ${{ inputs.task-path }} != ''
+      name: Run ecs-task-def container diff
+      run: cmd ecs-task-def --container-name ${{ inputs.container-name }} --github-email ${{ inputs.github-email }} --github-owner ${{ inputs.github-owner }} --github-repository ${{ inputs.github-repository }} --github-token ${{ inputs.github-token }} --github-url ${{ inputs.github-url }} --github-username ${{ inputs.github-username }} --task-path ${{ inputs.task-path }}
+      shell: bash
+     - if: ${{ inputs.container-path }} != ''
+      name: Run ecs-task-def container diff
+      run: cmd ecs-task-def --container-name ${{ inputs.container-name }} --container-path ${{ inputs.container-path }} --github-email ${{ inputs.github-email }} --github-owner ${{ inputs.github-owner }} --github-repository ${{ inputs.github-repository }} --github-token ${{ inputs.github-token }} --github-url ${{ inputs.github-url }} --github-username ${{ inputs.github-username }}
+      shell: bash
