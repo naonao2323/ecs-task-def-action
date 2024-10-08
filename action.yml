@@ -2,13 +2,17 @@ name: ecs-task-def
 
 inputs:
   container-name:
+    description: 'Container name to use for the updated tag.'
     required: true
   container-path:
+    description: 'Container path to use for the updated tag.'
     required: false
     default: ''
   target-tag:
+    description: 'Target tag for the updated tag.'
     required: true
   task-path:
+    description: 'Task path to use for the updated tag.'
     required: false
     default: ''
   github-email:
